@@ -38,11 +38,21 @@ int (*function_pointers[]) (char**) = {
     &internal_exit
 };
 
+int make_system_call(char* path){
+    printf("%d\n", SYS_chdir);
+    syscall(SYS_chdir, 80, path, 12);
+    char cwd[PATH_MAX];
+        if (getcwd(cwd, sizeof(cwd)) != NULL) {
+            printf(cwd);
+    }
+}
+
 int internal_cd(char** args){
     if(args[1] == NULL){
         printf("Path not provided!");
     }
     else{
+        make_system_call(args[1]);
         if (chdir(args[1]) !=0 ){
             perror("shell");
         }
